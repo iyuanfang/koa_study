@@ -1,6 +1,9 @@
 import "reflect-metadata"; 
-import { createKoaServer } from "routing-controllers";
+import { createKoaServer ,useContainer} from "routing-controllers";
+import {Container} from "typedi";
 import { UserController } from "./controller/UserController";
+
+useContainer(Container);
 
 const app = createKoaServer({
     controllers: [UserController] 

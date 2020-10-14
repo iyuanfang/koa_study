@@ -114,7 +114,7 @@ nodemon index.ts
 ```
 这里nodemon会检测文件变化，然后自己调用ts-node启动服务
 
-## 重构到更符合项目目录
+## 重构项目目录
 我们使用typestack的routing-controllers 包来做DI
 
 ### 安装依赖
@@ -185,6 +185,111 @@ console.log("start server 3000");
 ```
 nodemon src/app.ts
 ```
+
+## 引入model与service做DI注入
+### model里增加User.ts
+```
+export interface User{
+    id:number,
+    name:string,
+    pwd:string
+}
+```
+直接采用了interface，和mongodb可以直接搭配
+
+### service里增加UserService.ts
+```
+import {User} from '../model/User';
+
+export class UserService{
+    getAll():User[]{
+        return [{id:1,name:"yuanfang",pwd:"123456"},{id:2,name:"yuanfang2",pwd:"123456"}];
+    }
+
+    getOne(id:number):User{
+        return {id:1,name:"yuanfang",pwd:"123456"};
+    }
+
+    save(user:User){
+        console.log("Save user ",user);
+    }
+
+    remove(id:number){
+        console.log("Remove user id:",id);
+    }
+}
+```
+### 修改UserController.ts
+```
+import { JsonController, Param, Body, Get, Post, Put, Delete } from "routing-controllers";
+import {UserService} from "../service/UserService"
+
+@JsonController()
+export class UserController {
+    constructor(private userService:UserService){
+    }
+
+    @Get("/user")
+    getAll() {
+        return this.userService.getAll();
+    }
+
+    @Get("/user/:id")
+    getOne(@Param("id") id: number) {
+        return this.userService.getOne(id);
+    }
+
+    @Post("/user")
+    post(@Body() user: any) {
+        this.userService.save(user);
+        return "Saving user "+JSON.stringify(user);
+    }
+
+    @Put("/user/:id")
+    put(@Param("id") id: number, @Body() user: any) {
+        user.id=id;
+        this.userService.save(user);
+        return "Updating a user #"+id+":"+JSON.stringify(user);
+    }
+
+    @Delete("/user/:id")
+    remove(@Param("id") id: number) {
+        this.userService.remove(id);
+        return "Removing user #"+id;
+    }
+}
+```
+这里我改成了JsonController，后续准备用Vue做前后端分离，所以直接输出json
+通过constructor 注入 userService
+通过this.userService调用方法
+
+### 修改app.ts
+```
+import "reflect-metadata"; 
+import { createKoaServer ,useContainer} from "routing-controllers";
+import {Container} from "typedi";
+import { UserController } from "./controller/UserController";
+
+useContainer(Container);
+
+const app = createKoaServer({
+    controllers: [UserController] 
+});
+
+// 在3000端口运行koa应用
+app.listen(3000)
+console.log("start server 3000");
+```
+这里使用typedi来DI注入
+
+### 再运行
+```
+nodemon src/app.ts
+```
+
+### 用postman测试
+下载 https://www.postman.com/downloads/
+postman可以模拟rest请求
 
 ## 使用mongodb
 
