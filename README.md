@@ -114,36 +114,79 @@ nodemon index.ts
 ```
 这里nodemon会检测文件变化，然后自己调用ts-node启动服务
 
-### 重构到更符合项目目录
+## 重构到更符合项目目录
 我们使用typestack的routing-controllers 包来做DI
 
 ### 安装依赖
 ```
-npm i routing-controllers reflect-metadata class-transformer class-validator
+npm i routing-controllers reflect-metadata class-transformer class-validator typedi
 ```
 
-- 修改package.json
+### 修改tsconfig.json,增加
 ```
-    "scripts": {
-        "dev": "tsc && node dist/app.js",
-        "watch": "nodemon --watch src/app.ts -e ts,tsx --exec ts-node src/app.ts"
-    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
 ```
-这里增加了脚本dev和watch，dev编译成js再运行，watch直接用nodemon监控文件变化，然后用ts-node方式直接运行ts文件
 
-- 运行项目
-```
-npm run dev
+### 创建目录
+创建src目录，下级目录为controller,model,service
 
+### controller下创建UserController.ts
 ```
-  js方式运行，或者
-```
-npm run watch //现在有报错，后面解决
+import { Controller, Param, Body, Get, Post, Put, Delete } from "routing-controllers";
 
-nodemon --watch src/app.ts -e ts,tsx --exec ts-node src/app.ts
+@Controller()
+export class UserController {
 
+    @Get("/user")
+    getAll() {
+        return "This action returns all users";
+    }
+
+    @Get("/user/:id")
+    getOne(@Param("id") id: number) {
+        return "This action returns user #" + id;
+    }
+
+    @Post("/user")
+    post(@Body() user: any) {
+        return "Saving user "+JSON.stringify(user);
+    }
+
+    @Put("/user/:id")
+    put(@Param("id") id: number, @Body() user: any) {
+        return "Updating a user #"+id+":"+JSON.stringify(user);
+    }
+
+    @Delete("/user/:id")
+    remove(@Param("id") id: number) {
+        return "Removing user #"+id;
+    }
+}
 ```
-  ts-node 直接运行
+这里CRUD都适用注解方式
+
+### src下新增app.ts
+```
+import "reflect-metadata"; 
+import { createKoaServer } from "routing-controllers";
+import { UserController } from "./controller/UserController";
+
+const app = createKoaServer({
+    controllers: [UserController] 
+});
+
+// 在3000端口运行koa应用
+app.listen(3000)
+console.log("start server 3000");
+```
+
+### 运行
+```
+nodemon src/app.ts
+```
+
+## 使用mongodb
 
 
 

@@ -15,12 +15,12 @@ export class UserController {
 
     @Post("/user")
     post(@Body() user: any) {
-        return "Saving user ";
+        return "Saving user "+JSON.stringify(user);
     }
 
     @Put("/user/:id")
     put(@Param("id") id: number, @Body() user: any) {
-        return "Updating a user #"+id;
+        return "Updating a user #"+id+":"+JSON.stringify(user);
     }
 
     @Delete("/user/:id")
