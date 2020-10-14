@@ -1,6 +1,6 @@
 # koa_study
 
-## js代码运行koa
+## 1.js代码运行koa
 
 从头创建koa项目，做CRUD。先创建一个文件夹，我的是koa_study
 
@@ -69,7 +69,7 @@ nodemon index.js
 nodemon会监控文件变化，修改index.js会自动重新启动
 
 
-## 改成TypeScript方式运行koa
+## 2.改成TypeScript方式运行koa
 ### 拷贝index.js文件并改名为index.ts
 我们用ts-node运行ts文件
 
@@ -114,7 +114,7 @@ nodemon index.ts
 ```
 这里nodemon会检测文件变化，然后自己调用ts-node启动服务
 
-## 重构项目目录
+## 3.重构项目目录
 我们使用typestack的routing-controllers 包来做DI
 
 ### 安装依赖
@@ -186,7 +186,7 @@ console.log("start server 3000");
 nodemon src/app.ts
 ```
 
-## 引入model与service做DI注入
+## 4.引入model与service做DI注入
 ### model里增加User.ts
 ```
 export interface User{
@@ -291,7 +291,7 @@ nodemon src/app.ts
 下载 https://www.postman.com/downloads/
 postman可以模拟rest请求
 
-## 使用mongodb
+## 5.使用mongodb
 
 
 

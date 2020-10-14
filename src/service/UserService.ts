@@ -1,19 +1,26 @@
-import {User} from '../model/User';
+import { User } from "../entity/User";
+import { getManager } from "typeorm";
 
-export class UserService{
-    getAll():User[]{
-        return [{id:1,name:"yuanfang",pwd:"123456"},{id:2,name:"yuanfang2",pwd:"123456"}];
-    }
+export class UserService {
+  async getAll() {
+    return await getManager().find(User);
+  }
 
-    getOne(id:number):User{
-        return {id:1,name:"yuanfang",pwd:"123456"};
-    }
+  async getOne(id: number) {
+    const user: User = await getManager().findOne(User, { id: id });
 
-    save(user:User){
-        console.log("Save user ",user);
-    }
+    console.log("find user:", user);
 
-    remove(id:number){
-        console.log("Remove user id:",id);
-    }
+    return user ? user : {};
+  }
+
+  async save(user: User) {
+    await getManager().save(user);
+    console.log("Save user ", user);
+  }
+
+  async remove(id: number) {
+    await getManager().delete(User, { id: id });
+    console.log("Remove user id:", id);
+  }
 }

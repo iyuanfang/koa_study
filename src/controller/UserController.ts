@@ -1,4 +1,5 @@
 import { JsonController, Param, Body, Get, Post, Put, Delete } from "routing-controllers";
+import { User } from "../entity/User";
 import {UserService} from "../service/UserService"
 
 @JsonController()
@@ -17,9 +18,14 @@ export class UserController {
     }
 
     @Post("/user")
-    post(@Body() user: any) {
-        this.userService.save(user);
-        return "Saving user "+JSON.stringify(user);
+    post(@Body() user: any) {   
+        const userr:User=new User();
+        userr.id=user.id;
+        userr.name=user.name;
+        userr.pwd=user.pwd;
+        
+        this.userService.save(userr);
+        return "Saving user：";
     }
 
     @Put("/user/:id")

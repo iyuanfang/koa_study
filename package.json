@@ -8,8 +8,10 @@
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.4.0",
+    "mongodb": "^3.6.2",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.9.0-alpha.6",
-    "typedi": "^0.8.0"
+    "typedi": "^0.8.0",
+    "typeorm": "^0.2.28"
   }
 }
