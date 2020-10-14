@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "module": "commonjs", // 编译生成的模块系统代码
+      "target": "esnext", // 指定ecmascript的目标版本
+      "noImplicitAny": false, // 禁止隐式any类型
+      "esModuleInterop":true, //这里可以使用js相同的import方式，需要设置为true
+      "sourceMap": false,
+      "allowJs": false, // 是否允许出现js
+      "newLine": "LF",
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true
+    }
+}
