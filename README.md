@@ -6,7 +6,7 @@
 
 ### 项目根目录命令行运行安装依赖
 ```
-npm i //生成package.json文件
+npm init //生成package.json文件
 
 npm i -g nodemon //全局安装nodemon
 
