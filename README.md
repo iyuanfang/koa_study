@@ -71,9 +71,10 @@ nodemon会监控文件变化，修改index.js会自动重新启动
 
 ## 2.改成TypeScript方式运行koa
 ### 拷贝index.js文件并改名为index.ts
-我们用ts-node运行ts文件
+TypeScript是JavaScript的超集，通过配置可以做到代码兼容。
+我们这里不改一行代码，可以直接运行ts
 
-### 首先项目根路径新增tsconfig.json:
+### 项目根路径新增tsconfig.json:
 ```
 {
     "compilerOptions": {
@@ -99,12 +100,6 @@ npm i -g ts-node //全局安装ts-node
 npm i -g typescript
 npm i -g @types/node //全局安装node ts支持
 npm i @types/koa @types/koa-router @types/koa-bodyparser
-
-```
-
-### 运行
-```
-ts-node index.ts 
 
 ```
 ### nodemon运行
@@ -292,6 +287,107 @@ nodemon src/app.ts
 postman可以模拟rest请求
 
 ## 5.使用mongodb
+我们使用typeorm来做数据操作
+typeorm很强大，类似java世界的hibernate，地址：https://github.com/typeorm/typeorm
+### 安装依赖
+```
+npm i mongodb typeorm
+```
+
+### 改为entity
+typeorm 使用entiy注解来表示实体类
+我们将原来的model文件夹改成entity，User.ts代码改成：
+```
+import { Column, Entity, ObjectID, ObjectIdColumn, PrimaryColumn } from "typeorm";
+
+@Entity()
+export class User {
+  @ObjectIdColumn()
+  _id: ObjectID;
+
+  @Column()
+  id:number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  pwd: string;
+}
+
+```
+- 这里要重点说下mongodb实体类写法与mysql有区别：
+- 因为mongodb自己会生成带下划线的ObjectID，所以要增加一个字段_id，注解为@ObjectIdColumn()
+- typeorm注解很强大，可以定义类型，还可以做验证，可以自行看typeorm文档
+
+### 修改app.ts
+```
+import "reflect-metadata";
+import { createKoaServer, useContainer } from "routing-controllers";
+import { Container } from "typedi";
+import { UserController } from "./controller/UserController";
+import { createConnection } from "typeorm";
+
+createConnection();
+
+useContainer(Container);
+
+const app = createKoaServer({
+    controllers: [UserController]
+});
+
+// 在3000端口运行koa应用
+app.listen(3000)
+console.log("start server 3000");
+
+```
+- 这里调用typeorm的createConnection方法。typeorm的connection是一个pool，只需要每次调用时get就行，不用close。
+- 同时这个pool也是全局的，只需要启动时创建，其它代码直接获取connection
+- 会自动读取根目录下的ormconfig.json配置文件，获取数据库参数
+
+### ormconfig.json
+```
+{
+    "type": "mongodb",
+    "host": "localhost",
+    "database": "test",
+    "synchronize": true,
+    "logging": false,
+    "entities": [
+        "src/entity/*.ts"
+    ],
+    "subscribers": [
+        "src/subscriber/*.js"
+    ],
+    "migrations": [
+        "src/migration/*.js"
+    ],
+    "cli": {
+        "entitiesDir": "src/entity",
+        "migrationsDir": "src/migration",
+        "subscribersDir": "src/subscriber"
+    }
+}
+```
+我本地mongodb是直接安装的，没有用户名密码，生产环境要设置
+
+### service调用connection做CRUD
+```
+```
+
+### controller调用service
+```
+```
+
+### 运行
+```
+nodemon src/app.ts
+```
+
+### 查看数据
+mongodb我用的客户端是NoSQLBooster,下载：
+
+https://nosqlbooster.com/downloads
 
 
 

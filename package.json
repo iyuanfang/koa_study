@@ -1,4 +1,24 @@
 {
+  "name": "koa_study",
+  "description": "从头创建koa项目，做CRUD。先创建一个文件夹，我的是koa_study",
+  "version": "0.0.3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iyuanfang/koa_study.git"
+  },
+  "keywords": [
+    "koa"
+  ],
+  "author": "iyuanfang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iyuanfang/koa_study/issues"
+  },
+  "homepage": "https://github.com/iyuanfang/koa_study#readme",
   "dependencies": {
     "@types/koa": "^2.11.5",
     "@types/koa-bodyparser": "^4.3.0",
@@ -9,6 +29,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^9.4.0",
     "mongodb": "^3.6.2",
+    "nodemon": "^2.0.5",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.9.0-alpha.6",
     "typedi": "^0.8.0",

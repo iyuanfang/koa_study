@@ -1,18 +1,15 @@
-import "reflect-metadata"; 
-import { createKoaServer ,useContainer} from "routing-controllers";
-import {Container} from "typedi";
+import "reflect-metadata";
+import { createKoaServer, useContainer } from "routing-controllers";
+import { Container } from "typedi";
 import { UserController } from "./controller/UserController";
-import {createConnection,Connection} from "typeorm";
+import { createConnection } from "typeorm";
 
-createConnection().then(async connection => {
-    console.log("connection created");
-    
-}).catch(error => console.log("TypeORM connection error: ", error));
+createConnection();
 
 useContainer(Container);
 
 const app = createKoaServer({
-    controllers: [UserController] 
+    controllers: [UserController]
 });
 
 // 在3000端口运行koa应用
