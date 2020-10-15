@@ -372,11 +372,91 @@ console.log("start server 3000");
 我本地mongodb是直接安装的，没有用户名密码，生产环境要设置
 
 ### service调用connection做CRUD
+UserService.ts
 ```
+import { User } from "../entity/User";
+import { getManager } from "typeorm";
+
+export class UserService {
+  async getAll() {
+    return await getManager().find(User);
+  }
+
+  async getOne(id: number) {
+    const user: User = await getManager().findOne(User, { id: id });
+
+    console.log("find user:", user);
+
+    return user ? user : {};
+  }
+
+  async save(user: User) {
+    await getManager().save(user);
+    console.log("Save user ", user);
+  }
+
+  async update(id: number, user: User) {
+    await getManager().update(User, { id: id }, user);
+    console.log("Update user ", user);
+  }
+
+  async delete(id: number) {
+    await getManager().delete(User, { id: id });
+    console.log("Remove user id:", id);
+  }
+}
+
 ```
 
 ### controller调用service
+UserController.ts
 ```
+import { JsonController, Param, Body, Get, Post, Put, Delete } from "routing-controllers";
+import { User } from "../entity/User";
+import {UserService} from "../service/UserService"
+
+@JsonController()
+export class UserController {
+    constructor(private userService:UserService){
+    }
+
+    @Get("/user")
+    getAll() {
+        return this.userService.getAll();
+    }
+
+    @Get("/user/:id")
+    getOne(@Param("id") id: number) {
+        return this.userService.getOne(id);
+    }
+
+    @Post("/user")
+    post(@Body() user: any) {   
+        const userr:User=new User();
+        userr.id=user.id;
+        userr.name=user.name;
+        userr.pwd=user.pwd;
+        
+        this.userService.save(userr);
+        return "Saving user："+JSON.stringify(userr);
+    }
+
+    @Put("/user/:id")
+    put(@Param("id") id: number, @Body() user: any) {
+        const userr:User=new User();
+        userr.id=id;
+        userr.name=user.name;
+        userr.pwd=user.pwd;
+        this.userService.update(id,userr);
+        return "Updating a user #"+id+":"+JSON.stringify(userr);
+    }
+
+    @Delete("/user/:id")
+    delete(@Param("id") id: number) {
+        this.userService.delete(id);
+        return "Deleted user #"+id;
+    }
+}
 ```
 
 ### 运行

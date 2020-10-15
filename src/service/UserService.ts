@@ -19,7 +19,12 @@ export class UserService {
     console.log("Save user ", user);
   }
 
-  async remove(id: number) {
+  async update(id: number, user: User) {
+    await getManager().update(User, { id: id }, user);
+    console.log("Update user ", user);
+  }
+
+  async delete(id: number) {
     await getManager().delete(User, { id: id });
     console.log("Remove user id:", id);
   }

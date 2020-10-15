@@ -25,19 +25,22 @@ export class UserController {
         userr.pwd=user.pwd;
         
         this.userService.save(userr);
-        return "Saving user：";
+        return "Saving user："+JSON.stringify(userr);
     }
 
     @Put("/user/:id")
     put(@Param("id") id: number, @Body() user: any) {
-        user.id=id;
-        this.userService.save(user);
-        return "Updating a user #"+id+":"+JSON.stringify(user);
+        const userr:User=new User();
+        userr.id=id;
+        userr.name=user.name;
+        userr.pwd=user.pwd;
+        this.userService.update(id,userr);
+        return "Updating a user #"+id+":"+JSON.stringify(userr);
     }
 
     @Delete("/user/:id")
-    remove(@Param("id") id: number) {
-        this.userService.remove(id);
-        return "Removing user #"+id;
+    delete(@Param("id") id: number) {
+        this.userService.delete(id);
+        return "Deleted user #"+id;
     }
 }
