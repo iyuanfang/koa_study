@@ -464,6 +464,22 @@ export class UserController {
 nodemon src/app.ts
 ```
 
+## 6.支持cors跨域
+我用vue做前端，axios调用这个koa后端时，会报跨域错误。所以改动koa支持cors跨域。
+```
+npm i @types/koa__cors -S
+```
+然后修改src/app.ts，增加2行：
+```
+import cors from "@koa/cors";
+
+app.use(cors());
+```
+### 运行就支持跨域了
+```
+nodemon src/app.ts
+```
+
 ### 查看数据
 mongodb我用的客户端是NoSQLBooster,下载：
 
