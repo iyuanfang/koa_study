@@ -12,5 +12,8 @@ export class User {
   name: string;
 
   @Column()
+  brief:string;
+
+  @Column()
   pwd: string;
 }
