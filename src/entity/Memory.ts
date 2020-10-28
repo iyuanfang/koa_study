@@ -1,7 +1,7 @@
 import { Column, Entity, ObjectID, ObjectIdColumn, PrimaryColumn } from "typeorm";
 
 @Entity()
-export class User {
+export class Memory {
   @ObjectIdColumn()
   _id: ObjectID;
 
@@ -9,14 +9,12 @@ export class User {
   id:number;
 
   @Column()
-  name: string;
+  date: string; //yyyy-MM-dd hh:ss 格式
 
   @Column()
-  brief:string;
+  img:string;
 
   @Column()
-  avatar:string; //头像文件地址，用服务器文件方案而非oss
+  story:string; //想说的话
 
-  @Column()
-  pwd: string;
 }
