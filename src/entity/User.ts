@@ -5,8 +5,8 @@ export class User {
   @ObjectIdColumn()
   _id: ObjectID;
 
-  @Column()
-  id:number;
+  // @Column()
+  // id:string;
 
   @Column()
   name: string;
