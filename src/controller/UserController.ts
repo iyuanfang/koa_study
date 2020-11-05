@@ -25,11 +25,16 @@ export class UserController {
     return this.userService.getOne(id);
   }
 
+  @Get("/user/name/:name")
+  getName(@Param("name") name: string) {
+    return this.userService.isNameExist(name);
+  }
+
   @Post("/user")
-  post(@Body() userJson: any) {
+  async post(@Body() userJson: any) {
     const user: User = Object.assign(new User(), userJson);
-    this.userService.save(user);
-    return "Saving user：" + JSON.stringify(user);
+    const userSaved = await this.userService.save(user);
+    return JSON.stringify(userSaved);
   }
 
   @Post("/login")

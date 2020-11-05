@@ -25,9 +25,8 @@ export class UserService {
     }
   }
 
-  async save(user: User) {
-    await getManager().save(user);
-    console.log("Save user ", user);
+  async save(user: User) :Promise<User>{
+    return await getManager().save(user);
   }
 
   async update(id: string, user: User) {
@@ -38,5 +37,14 @@ export class UserService {
   async delete(id: string) {
     await getManager().delete(User, { "_id": ObjectId(id) });
     console.log("Remove user id:", id);
+  }
+
+  async isNameExist(name:string) :Promise<boolean>{
+    const user: User = await getManager().findOne(User, { "name": name});
+    if(user){
+      return true;
+    }else{
+      return false;
+    }
   }
 }
