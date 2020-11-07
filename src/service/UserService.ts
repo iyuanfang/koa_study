@@ -7,12 +7,12 @@ export class UserService {
     return await getManager().find(User);
   }
 
-  async getOne(id: string) {
+  async getOne(id: string) :Promise<User> {
     const user: User = await getManager().findOne(User, { "_id": ObjectId(id) });
 
     console.log("find user:", user);
 
-    return user ? user : {};
+    return user;
   }
 
   async login(name:string,pwd:string) :Promise<string> {

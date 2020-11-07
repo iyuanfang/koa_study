@@ -4,6 +4,7 @@ import {
   Get,
   JsonController,
   Param,
+  Patch,
   Post,
   Put,
 } from "routing-controllers";
@@ -48,7 +49,15 @@ export class UserController {
   put(@Param("id") id: string, @Body() userJson: any) {
     const user: User = Object.assign(new User(), userJson);
     this.userService.update(id, user);
-    return "Updating a user #" + id + ":" + JSON.stringify(user);
+    return "Updating a user #" + id + ":" + JSON.stringify(userJson);
+  }
+
+  @Patch("/user/:id")
+  async patch(@Param("id") id: string, @Body() userJson: any) {
+    let user:User=await this.userService.getOne(id);
+    user = Object.assign(user, userJson);
+    this.userService.update(id, user);
+    return "Patching a user #" + id + ":" + JSON.stringify(userJson);
   }
 
   @Delete("/user/:id")
