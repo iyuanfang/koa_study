@@ -4,7 +4,6 @@ import { Container } from "typedi";
 import { UserController } from "./controller/UserController";
 import { MemoryController } from "./controller/MemoryController";
 import { createConnection } from "typeorm";
-import cors from "@koa/cors";
 import KoaStatic from "koa-static";
 
 createConnection();
@@ -12,10 +11,9 @@ createConnection();
 useContainer(Container);
 
 const app = createKoaServer({
-  controllers: [UserController, MemoryController],
+  controllers: [UserController, MemoryController],cors:true
 });
 
-app.use(cors());
 app.use(KoaStatic("./static"));
 
 // 在3000端口运行koa应用

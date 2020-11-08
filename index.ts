@@ -1,10 +1,32 @@
 const Koa = require('koa');
 const Router = require('koa-router');
-const bodyParser = require('koa-bodyparser');
+const koaBody = require('koa-body');
 const app = new Koa();
 const router = new Router();
 
-app.use(bodyParser());
+app.use(koaBody());
+
+app.use(koaBody({
+    // 支持文件格式
+    multipart: true,
+    formidable: {
+        // 上传目录
+        uploadDir: './static/img/',
+        // 保留文件扩展名
+        keepExtensions: true,
+    }
+}));
+
+// const upload = multer({ dest: './static/img/' });
+
+// app.use(router.post('/avatar', upload.single('file')));
+
+router.post('/upload', ctx => {
+    const file = ctx.request.files.file
+    console.log("upload file:",file);
+    
+    ctx.body = { path: file.path }
+})
 
 router.get('/', async(ctx) => {
     ctx.body = "Index";
@@ -38,6 +60,8 @@ router.put('/user/:id', async(ctx) => {
     console.log("update user id:" + id);
     ctx.body = user;
 })
+
+
 
 app.use(router.routes());
 

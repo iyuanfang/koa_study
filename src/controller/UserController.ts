@@ -7,9 +7,11 @@ import {
   Patch,
   Post,
   Put,
+  UploadedFile,
 } from "routing-controllers";
 import { User } from "../entity/User";
 import { UserService } from "../service/UserService";
+import { fileUploadOptions } from "./Upload";
 
 @JsonController()
 export class UserController {
@@ -54,7 +56,7 @@ export class UserController {
 
   @Patch("/user/:id")
   async patch(@Param("id") id: string, @Body() userJson: any) {
-    let user:User=await this.userService.getOne(id);
+    let user: User = await this.userService.getOne(id);
     user = Object.assign(user, userJson);
     this.userService.update(id, user);
     return "Patching a user #" + id + ":" + JSON.stringify(userJson);
@@ -64,5 +66,14 @@ export class UserController {
   delete(@Param("id") id: string) {
     this.userService.delete(id);
     return "Deleted user #" + id;
+  }
+
+  @Post("/avatar/:id")
+  async avatar(@UploadedFile("avatar", { options: fileUploadOptions }) file: any, @Param("id") id: string) {
+    let user: User = await this.userService.getOne(id);
+    user.avatar=file.filename
+    this.userService.update(id, user);
+    console.log("upload avatar:", file);
+    return file.filename;
   }
 }
