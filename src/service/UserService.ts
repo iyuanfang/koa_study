@@ -8,7 +8,7 @@ export class UserService {
   }
 
   async getOne(id: string) :Promise<User> {
-    const user: User = await getManager().findOne(User, { "_id": ObjectId(id) });
+    const user: User = await getManager().findOne(User, { "_id": new ObjectId(id) });
 
     console.log("find user:", user);
 
@@ -30,12 +30,12 @@ export class UserService {
   }
 
   async update(id: string, user: User) {
-    await getManager().update(User, { "_id": ObjectId(id) }, user);
+    await getManager().update(User, { "_id": new ObjectId(id) }, user);
     console.log("Update user ", user);
   }
 
   async delete(id: string) {
-    await getManager().delete(User, { "_id": ObjectId(id) });
+    await getManager().delete(User, { "_id": new ObjectId(id) });
     console.log("Remove user id:", id);
   }
 

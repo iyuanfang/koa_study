@@ -21,7 +21,7 @@ export class MemoryController {
   }
 
   @Get("/memory/:id")
-  getOne(@Param("id") id: number) {
+  getOne(@Param("id") id: string) {
     return this.memoryService.getOne(id);
   }
 
@@ -33,14 +33,14 @@ export class MemoryController {
   }
 
   @Put("/memory/:id")
-  put(@Param("id") id: number, @Body() memoryJson: any) {
+  put(@Param("id") id: string, @Body() memoryJson: any) {
     const memory: Memory = Object.assign(new Memory(), memoryJson);
     this.memoryService.update(id, memory);
     return "Updating a memory #" + id + ":" + JSON.stringify(memory);
   }
 
   @Delete("/memory/:id")
-  delete(@Param("id") id: number) {
+  delete(@Param("id") id: string) {
     this.memoryService.delete(id);
     return "Deleted memory #" + id;
   }

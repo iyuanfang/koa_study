@@ -1,4 +1,5 @@
-import { Column, Entity, ObjectID, ObjectIdColumn, PrimaryColumn } from "typeorm";
+import { Column, Entity, ManyToOne, ObjectID, ObjectIdColumn, PrimaryColumn } from "typeorm";
+import { User } from "./User";
 
 @Entity()
 export class Memory {
@@ -6,15 +7,15 @@ export class Memory {
   _id: ObjectID;
 
   @Column()
-  id:number;
+  date: Date; //当前时间
 
   @Column()
-  date: string; //yyyy-MM-dd hh:ss 格式
-
-  @Column()
-  img:string;
+  imgs:string[]; //图片列表
 
   @Column()
   story:string; //想说的话
+
+  @ManyToOne(type => User, user => user.memories)
+  user:User;
 
 }

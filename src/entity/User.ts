@@ -3,8 +3,10 @@ import {
   Entity,
   ObjectID,
   ObjectIdColumn,
+  OneToMany,
   PrimaryColumn,
 } from "typeorm";
+import { Memory } from "./Memory";
 
 @Entity()
 export class User {
@@ -28,4 +30,7 @@ export class User {
 
   @Column()
   pwd: string;
+
+  @OneToMany(type =>Memory,memory =>memory.user)
+  memories:Memory[];
 }

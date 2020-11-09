@@ -1,31 +1,31 @@
 import { Memory } from "../entity/Memory";
 import { getManager } from "typeorm";
+import { ObjectId } from "mongodb";
 
 export class MemoryService {
   async getAll() {
     return await getManager().find(Memory);
   }
 
-  async getOne(id: number) {
-    const memory: Memory = await getManager().findOne(Memory, { id: id });
+  async getOne(id: string) {
+    const memory: Memory = await getManager().findOne(Memory, { "_id": new ObjectId(id) });
 
     console.log("find memory:", memory);
 
-    return memory ? memory : {};
+    return memory;
   }
 
   async save(memory: Memory) {
-    await getManager().save(memory);
-    console.log("Save memory ", memory);
+    return await getManager().save(memory);
   }
 
-  async update(id: number, memory: Memory) {
-    await getManager().update(Memory, { id: id }, memory);
+  async update(id: string, memory: Memory) {
+    await getManager().update(Memory, { "_id": new ObjectId(id) }, memory);
     console.log("Update memory ", memory);
   }
 
-  async delete(id: number) {
-    await getManager().delete(Memory, { id: id });
+  async delete(id: string) {
+    await getManager().delete(Memory, { "_id": new ObjectId(id) });
     console.log("Remove memory id:", id);
   }
 }
