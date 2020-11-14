@@ -15,7 +15,9 @@ export class Memory {
   @Column()
   story:string; //想说的话
 
-  @ManyToOne(type => User, user => user.memories)
-  user:User;
+  // @ManyToOne(type => User, user => user.memories)
+  // user:User;
+  @Column()
+  user_id:string; //用户id，存string
 
 }

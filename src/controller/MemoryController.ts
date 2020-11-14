@@ -8,7 +8,7 @@ import {
   Put,
 } from "routing-controllers";
 import { Memory } from "../entity/Memory";
-import { MemoryService } from "../service/MemoryService";
+import MemoryService from "../service/MemoryService";
 
 @JsonController()
 export class MemoryController {
@@ -25,9 +25,15 @@ export class MemoryController {
     return this.memoryService.getOne(id);
   }
 
+  @Get("/memory/user/:id")
+  getByUser(@Param("id") id:string) {
+    return this.memoryService.getByUser(id);
+  }
+
   @Post("/memory")
   post(@Body() memoryJson: any) {
     const memory: Memory = Object.assign(new Memory(), memoryJson);
+    memory.date=new Date();
     this.memoryService.save(memory);
     return "Saving memory：" + JSON.stringify(memory);
   }

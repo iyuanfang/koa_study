@@ -31,6 +31,6 @@ export class User {
   @Column()
   pwd: string;
 
-  @OneToMany(type =>Memory,memory =>memory.user)
-  memories:Memory[];
+  // @OneToMany(type =>Memory,memory =>memory.user)
+  // memories:Memory[];
 }
