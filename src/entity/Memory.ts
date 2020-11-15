@@ -10,6 +10,9 @@ export class Memory {
   date: Date; //当前时间
 
   @Column()
+  city:string; //城市
+
+  @Column()
   imgs:string[]; //图片列表
 
   @Column()

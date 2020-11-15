@@ -11,7 +11,7 @@ import {
 } from "routing-controllers";
 import { User } from "../entity/User";
 import { UserService } from "../service/UserService";
-import { fileUploadOptions } from "./Upload";
+import { avatarUploadOptions } from "./Upload";
 
 @JsonController()
 export class UserController {
@@ -69,7 +69,7 @@ export class UserController {
   }
 
   @Post("/avatar/:id")
-  async avatar(@UploadedFile("avatar", { options: fileUploadOptions }) file: any, @Param("id") id: string) {
+  async avatar(@UploadedFile("avatar", { options: avatarUploadOptions }) file: any, @Param("id") id: string) {
     let user: User = await this.userService.getOne(id);
     user.avatar=file.filename
     this.userService.update(id, user);

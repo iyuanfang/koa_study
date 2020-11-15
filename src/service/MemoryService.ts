@@ -15,9 +15,9 @@ export default class MemoryService {
     return memory;
   }
 
-  async getByUser(user_id:string) { 
+  async getByUser(user_id:string,take:number,skip:number) { 
     // const memories=await getRepository(Memory).createQueryBuilder("memory").where("memory.user._id :=id",{id:id});
-    const memories=await getRepository(Memory).find({"user_id":user_id });
+    const memories=await getRepository(Memory).find({where:{"user_id":user_id },order:{date:"DESC"},take:take,skip:skip});
     console.log("get memory by user:",user_id);
     return memories;
   }
