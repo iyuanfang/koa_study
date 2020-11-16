@@ -1,6 +1,7 @@
 {
     "type": "mongodb",
-    "url": "mongodb+srv://yuanfang:yuanfang@cluster0.9dnbj.mongodb.net/memory?retryWrites=true&w=majority",
+    "host": "localhost",
+    "database": "test",
     "synchronize": true,
     "logging": false,
     "entities": [
