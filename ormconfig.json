@@ -1,7 +1,7 @@
 {
     "type": "mongodb",
     "host": "localhost",
-    "database": "test",
+    "database": "memory",
     "synchronize": true,
     "logging": false,
     "entities": [
