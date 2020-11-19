@@ -18,18 +18,18 @@ export class MemoryController {
   }
 
   @Get("/memory")
-  getAll() {
-    return this.memoryService.getAll();
+  async getAll() {
+    return JSON.stringify(await this.memoryService.getAll());
   }
 
   @Get("/memory/:id")
-  getOne(@Param("id") id: string) {
-    return this.memoryService.getOne(id);
+  async getOne(@Param("id") id: string) {
+    return JSON.stringify(await this.memoryService.getOne(id));
   }
 
   @Get("/memory/user/:id/:take/:skip")
-  getByUser(@Param("id") id:string,@Param("take") take:number,@Param("skip") skip:number) {
-    return this.memoryService.getByUser(id,take,skip);
+  async getByUser(@Param("id") id:string,@Param("take") take:number,@Param("skip") skip:number) {
+    return JSON.stringify(await this.memoryService.getByUser(id,take,skip));
   }
 
   @Post("/memory")
