@@ -70,10 +70,16 @@ export class UserController {
 
   @Post("/avatar/:id")
   async avatar(@UploadedFile("avatar", { options: avatarUploadOptions }) file: any, @Param("id") id: string) {
+    var sharp = require("sharp");
+    console.log(file);
+    
+    const path=file.path;
+    sharp(path).resize(100,100).toFile(path+".jpg",function(err){
+      console.log(err);
+    })
     let user: User = await this.userService.getOne(id);
-    user.avatar=file.filename
+    user.avatar=file.filename+".jpg"
     this.userService.update(id, user);
-    console.log("upload avatar:", file);
-    return file.filename;
+    return user.avatar;
   }
 }

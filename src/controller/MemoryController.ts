@@ -56,6 +56,11 @@ export class MemoryController {
   @Post("/memory/upload")
   async avatar(@UploadedFile("memory", { options: memoryUploadOptions }) file: any) {
     console.log("upload memory':", file);
+    var sharp = require("sharp");
+    const path=file.path;
+    sharp(path).resize(360,270).toFile(path+".jpg",function(err){
+      console.log(err);
+    })
     return file.filename;
   }
 }
