@@ -74,9 +74,7 @@ export class UserController {
     console.log(file);
     
     const path=file.path;
-    sharp(path).resize(100,100).toFile(path+".jpg",function(err){
-      console.log(err);
-    })
+    sharp(path).resize(100,100).toFile(path+".jpg");
     let user: User = await this.userService.getOne(id);
     user.avatar=file.filename+".jpg"
     this.userService.update(id, user);

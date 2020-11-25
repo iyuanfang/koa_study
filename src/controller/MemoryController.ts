@@ -6,7 +6,7 @@ import {
   Param,
   Post,
   Put,
-  UploadedFile,
+  UploadedFiles,
 } from "routing-controllers";
 import { Memory } from "../entity/Memory";
 import MemoryService from "../service/MemoryService";
@@ -54,13 +54,15 @@ export class MemoryController {
   }
 
   @Post("/memory/upload")
-  async avatar(@UploadedFile("memory", { options: memoryUploadOptions }) file: any) {
-    console.log("upload memory':", file);
+  async avatar(@UploadedFiles("memory", { options: memoryUploadOptions }) files: any[]) {
+    console.log("upload memory':", files);
     var sharp = require("sharp");
-    const path=file.path;
-    sharp(path).resize(360,270).toFile(path+".jpg",function(err){
-      console.log(err);
-    })
-    return file.filename;
+    let imgs=[];
+    for(let file of files){
+      imgs.push(file.filename);
+      let path=file.path;
+      sharp(path).resize(360,270).toFile(path+".jpg"); //创建压缩图，直接加.jpg
+    }
+    return imgs;
   }
 }
